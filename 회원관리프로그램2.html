@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #wrapper{
+            width: 750px;
+            height: 600px;
+            background: yellow;
+            margin: auto;
+        }
+        #header{
+            width: 100%;
+            height: 50px;
+            background: skyblue;
+            float: left;
+        }
+        #side{
+            width: 150px;
+            height: 550px;
+            background: pink;
+            float: left;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        #side input, button{
+            width: 80%;
+
+            margin-top: 5px;
+
+        }
+        #content{
+            width: 600px;
+            height: 550px;
+            background: palevioletred;
+            float: left;
+            overflow: scroll;
+        }
+        #pic{
+            width: 130px;
+            height: 145px;
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        let content;//테이블 출력될 영역
+        let id, pass, name, sel;//UI 컨트롤 들
+        let pic;//미리보기에 사용할 이미지 객체
+        let tag="";//등록함수,목록함수 들이함께 공유해야 하므로..
+        let memberList=[];//회원이 누적되어야 하므로
+
+
+        function preview(obj){
+            pic.src=obj.value;
+        }
+
+        function getList(){
+            tag="";//함수호출시 마다 기존의 tag를 싹 비우고
+            tag+="<table width=\"100%\" border=\"1px\">";
+            tag+="<tr>";
+            tag+="<td width=\"5%\">NO</td>";
+            tag+="<td width=\"20%\">이미지</td>";
+            tag+="<td width=\"25%\">ID</td>";
+            tag+="<td width=\"25%\">Password</td>";
+            tag+="<td width=\"25%\">Name</td>";
+            tag+="</tr>";
+
+            //내림차순으로 출력하되, 이미지도 표현되게처리
+            for(let i=memberList.length-1; i>=0; i--){
+                tag+="<tr>";
+                tag+="<td>"+(i+1)+"</td>";
+                tag+="<td><img src=\""+memberList[i][0]+"\" width=\"40px\"></td>";
+                tag+="<td>"+memberList[i][1]+"</td>";
+                tag+="<td>"+memberList[i][2]+"</td>";
+                tag+="<td>"+memberList[i][3]+"</td>";
+                tag+="</tr>";
+
+            }
+            tag+="<tr>";
+            tag+="<td colspan='5' align='right'>"+memberList.length+"명</td>";
+            tag+="</tr>";
+            tag+="</table>";
+            content.innerHTML=tag;
+        }
+
+        //한사람에 대한 정보를 일차원 배열에 담은 후
+        //그일차원 배열을 다시 전체 회원 명단인 이차원배열에 담자
+        function regist(){
+            //좌측UI에서 입력한 데이터(한사람)들을 일차원배열에 담기
+            let member=new Array(4);
+            member[0]=sel.value;
+            member[1]=id.value;
+            member[2]=pass.value;
+            member[3]=name.value;
+
+            //완성된 한사람에 대한 정보를 이차원 배열에 추가하기
+            memberList.push(member);//공간하나를 추가하면서 배열대입
+            //목록조회
+            getList();
+        }
+
+        function init(){
+            content=document.getElementById("content");
+            id=form1.id;
+            pass=form1.pass;
+            name=form1.name;
+            sel=form1.sel;
+            pic=document.getElementById("pic");
+        }
+        addEventListener("load", function(){
+            init();
+            getList();//회원의 목록 가져오기
+        });
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="header"></div>
+        <div id="side">
+            <!-- 
+                form이란? 입력양식의 범위를 설정하는 태그 
+                1)폼태그의 범위에 있는 모든 UI관련 컴포넌트는 서버로 전송할 수 있다
+                2)폼태그를 이용하면 요소들간의 접근방법으로써,
+                   요소의 부모,자식간 포함관계로 접근이 가능
+                   ex) window.document.form1.id
+            -->
+            <form name="form1">
+                <input type="text" name="id" placeholder="Id 입력">
+                <input type="text" name="pass" placeholder="비밀번호 입력">
+                <input type="text" name="name" placeholder="이름 입력">
+                <select name="sel" onchange="preview(this)">
+                    <option value="">프로필 사진 선택</option>
+                    <option value="../images/mario.png">마리오</option>
+                    <option value="../images//card/joker.png">조커</option>
+                    <option value="../images/plane.png">비행기</option>
+                    <option value="../images/피카.png">피카츄</option>
+                </select>
+                <img id="pic">
+            </form>
+            <button onClick="regist()">등록</button>
+        </div>
+        <div id="content"></div>
+    </div>
+</body>
+</html>

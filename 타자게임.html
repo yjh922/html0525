@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #wrapper{
+            width: 750px;
+            height: 550px;
+            background: yellow;
+            margin: auto;
+        }
+        #side{
+            width: 150px;
+            height: 100%;
+            background: skyblue;
+            float: left;
+            
+        }
+        #score{
+            width: 130px;
+            height: 80px;
+            background: beige;
+            margin: 10px;
+        
+        }
+        #hp{
+            width: 140px;
+            height: 180px;
+            background: palegreen;
+            margin: 5px;
+            position: relative;
+        }
+        #content{
+            width: 600px;
+            height: 100%;
+            background: greenyellow;
+            float: left;
+        }
+        #keyword{
+            width: 140px;
+            height: 70px;
+            margin: 1px;
+        }
+    </style>
+    <script>
+        let score;
+        let hp;
+        let content;
+        let keyword;
+        let hpList=[];
+        function CreateHp(){
+            for(let a=0; a<4; a++){
+                for(let i=0; i<3; i++){
+                    
+                    let box=document.createElement("div");
+                    box.style.width=40+"px";
+                    box.style.height=40+"px";
+                    box.style.background="blue";
+                    box.style.position="absolute";
+                    box.style.left=7+i*(40+2)+"px";
+                    box.style.top=7+a*(40+2)+"px";
+
+                    hp.appendChild(box);
+
+                    hpList.push(box);
+                }
+            }
+
+            
+
+            
+        }
+        function init(){
+            score=document.getElementById("score");
+            hp=document.getElementById("hp");
+            content=document.getElementById("content");
+            keyword=document.getElementById("keyword");
+
+            CreateHp();
+            
+        }
+        addEventListener("load",function(){
+            init();
+        });
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="side">
+            <div id="score"></div>
+            <div id="hp"></div>
+            <input type="text" id="keyword">
+            <button>게임시작</button>
+        </div>
+        <div id="content"></div>
+    </div>
+</body>
+</html>

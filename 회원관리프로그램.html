@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #wrapper{
+            width: 750px;
+            height: 600px;
+            background: yellow;
+            margin: auto;
+        }
+        #header{
+            width: 100%;
+            height: 50px;
+            background: skyblue;
+            float: left;
+        }
+        #side{
+            width: 150px;
+            height: 550px;
+            background: pink;
+            float: left;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        #side input, button{
+            width: 80%;
+
+            margin-top: 5px;
+
+        }
+        #content{
+            width: 600px;
+            height: 550px;
+            background: palevioletred;
+            float: left;
+        }
+    </style>
+    <script>
+        let id;//유저가 입력한 아이디
+        let pass;//유저가 입력한 비번
+        let name;//유저가 입력한 이름
+        let content;
+        //1차원 배열인 회원을 담게될 2차원 배열 선언
+        let memberList=[];//배열이 존재는 하나 길이가 0이다
+                                    //지금은 1차원 배열이지만 곧 회원 1명을 담게될 배열을
+                                    //대입하는 순간, 2차원 배열이될 예정
+        
+        let tag;//content div에 출력될 태그를 담아놓을 전역변우
+
+        //정보를 출력할 테이블 생성
+        function createTable(){
+            //방법1)createElement("table");
+            //방법 2)innerHTML="<table>";
+            //document.write("<table>"); 와 혼동하지 않기
+            //문서에 <> 붙이고 출력하면 태그로 인정하지만,
+            //문서가 아닌 div안에 <>를 넣으면 태그로 인정X
+            //따라서 innerText가 아닌 innerHTML로 해결
+            
+            tag="<table border='1px' width='100%'>";
+            tag+="<tr align='center'>";
+            tag+="<td>No</td>";
+            tag+="<td>ID</td>";
+            tag+="<td>password</td>";
+            tag+="<td>Name</td>";
+            tag+="</tr>";
+            tag+="</table>";
+            
+            //모아진 태그문자열을 최종적으로 content에 대입
+            content.innerHTML=tag;
+            console.log(tag);
+
+
+
+        }
+
+        //2차원배열에 들어있는 회원을 추출하여 테이블로 시각화 시키자
+        function getList(){
+
+            tag="<table border='1px' width='100%'>";
+            tag+="<tr align='center'>";
+            tag+="<td>No</td>";
+            tag+="<td>ID</td>";
+            tag+="<td>password</td>";
+            tag+="<td>Name</td>";
+            tag+="</tr>";
+            
+            for(let i=0;i<memberList.length;i++){
+                //이차원배열에서 한 층을 접근하여 1사람의 정보가 담겨진 일차원 배열을 추출하자
+                let member=memberList[i];
+
+
+                //여기에 데이터를 출력
+                //기존의 tag변수에 누적되어 있는 문자열에 이어서 붙이자
+                tag+="<tr onMouseOver=\"this.style.background='yellow' \" onMouseOut=\"this.style.background=''\">";
+                tag+="<td>10</td>";
+                tag+="<td>"+member[0]+"</td>";
+                tag+="<td>"+member[1]+"</td>";
+                tag+="<td>"+member[2]+"</td>";
+                tag+="</tr>";
+            }
+            //통계tr추가
+            tag+="<tr>";
+            tag+="<td align='right' colspan='4'>총 "+memberList.length+"명 </td>";
+            tag+="</tr>";
+            tag+="</table>";
+            console.log(tag);
+            content.innerHTML=tag;
+
+        }
+
+        //회원을 등록
+        //회원 1명은 1차원 배열에 담기고 이 일차원 배열들이 모여서
+        //2차원 배열인 표가 완성되는 것이다
+        function regist(){
+            //한 사람에 대한 정보를 담기 위한 비어있는 1차원 배열 준비
+            let member=new Array(3);
+            member[0]=id.value;//text박스는 그 값을 value로 처리
+            member[1]=pass.value;
+            member[2]=name.value;
+            console.log("등록된 회원은", member);
+            //2차원 배열에 추가하기
+            memberList.push(member);
+
+            //등록된 내용 출력하기
+            getList();
+        }
+        function init(){
+            id=window.document.form1.id;
+            pass=window.document.form1.pass;
+            //window.document는 생략도 가능하다
+            name=form1.name;
+            content=document.getElementById("content")
+        }
+        addEventListener("load", function(){
+            init();
+            getList();
+        });
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="header"></div>
+        <div id="side">
+            <!-- 
+                form이란? 입력양식의 범위를 설정하는 태그 
+                1)폼태그의 범위에 있는 모든 UI관련 컴포넌트는 서버로 전송할 수 있다
+                2)폼태그를 이용하면 요소들간의 접근방법으로써,
+                   요소의 부모,자식간 포함관계로 접근이 가능
+                   ex) window.document.form1.id
+            -->
+            <form name="form1">
+                <input type="text" name="id" placeholder="Id 입력">
+                <input type="text" name="pass" placeholder="비밀번호 입력">
+                <input type="text" name="name" placeholder="이름 입력">
+            </form>
+            <button onClick="regist()">등록</button>
+        </div>
+        <div id="content"></div>
+    </div>
+</body>
+</html>
